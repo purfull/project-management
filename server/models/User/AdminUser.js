@@ -23,7 +23,7 @@ module.exports = sequelize.define(
             unique:true
           },
           phone_number:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.STRING,
             unique:true
           },
           admin_role:{

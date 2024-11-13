@@ -22,11 +22,11 @@ module.exports = sequelize.define(
             type:DataTypes.STRING
         },
         password:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
 
         },
         cp_phone:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
 
         },
         cp_email:{
@@ -34,7 +34,7 @@ module.exports = sequelize.define(
 
         },
         company_phone:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
 
         },
         company_email:{

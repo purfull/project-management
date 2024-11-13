@@ -23,7 +23,7 @@ module.exports = sequelize.define(
             unique:true
           },
           phone_number:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.STRING,
             unique:true
           },
           user_role:{
@@ -35,7 +35,8 @@ module.exports = sequelize.define(
         },
         
         staff_phone:{
-            type:DataTypes.INTEGER
+            type:DataTypes.STRING
+
 
         },
        staff_email:{

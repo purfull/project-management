@@ -28,9 +28,29 @@ app.get('/check', (req, res) => {
 });
 
 const adminStaffRoutes = require('./routes/admin/staff');
+const adminClientRoutes = require('./routes/admin/client');
+const adminUserRoutes = require('./routes/admin/admin')
+
+// updates
+
+const adminStaffupdates = require('./routes/admin/staff');
+
+// delete 
+
+const adminStaffdelete = require('./routes/admin/staff')
 
 
 app.use('/admin/staff', adminStaffRoutes);
+app.use('/admin/client', adminClientRoutes);
+app.use('/admin/admin',adminUserRoutes);
+
+
+// updates for allthing
+
+app.use('/admin/staff',adminStaffupdates)
+
+// delete 
+app.use('/admin/staff', adminStaffdelete)
 
 
 db.sync({ force: false })
