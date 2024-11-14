@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "encrypted": "^0.0.2",
     "express": "^4.19.2",
     "mysql2": "^3.11.4",
     "nodemon": "^3.1.4",

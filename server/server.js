@@ -40,17 +40,29 @@ const adminStaffupdates = require('./routes/admin/staff');
 const adminStaffdelete = require('./routes/admin/staff')
 
 
+// get dcrpt staff id 
+
+const admingetStaff = require('./routes/admin/staff')
+
+// ending dcrpt staff id 
+
+// nov 14  for body parser
+
+
 app.use('/admin/staff', adminStaffRoutes);
 app.use('/admin/client', adminClientRoutes);
 app.use('/admin/admin',adminUserRoutes);
 
 
-// updates for allthing
+// updates for staff and althing
 
-app.use('/admin/staff',adminStaffupdates)
+app.use('/admin/staff',adminStaffupdates);
 
 // delete 
-app.use('/admin/staff', adminStaffdelete)
+app.use('/admin/staff', adminStaffdelete);
+
+// get dcrpt staff id 
+app.use('/admin/staff/',admingetStaff);
 
 
 db.sync({ force: false })
