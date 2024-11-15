@@ -28,7 +28,11 @@ module.exports = sequelize.define(
           },
           admin_role:{
             type:DataTypes.STRING,
-          }
+          },
+           isActive: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        }
 
 
     },

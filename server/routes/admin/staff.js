@@ -3,36 +3,12 @@ const router = express.Router();
 
 
 
-
 const registrationController = require('../../controller/registration');
 
-router.post('/register-user', registrationController.createStaff);
-
-// path for update 
-router.post('/register-updateuser', registrationController.updateStaff);
-
-// update end 
-
-// statrt for delete api 
-
-router.put('/register-deleteUser', registrationController.deleteStaff);
-
-
-// get staff data frm  decrption 
-
-router.get('/register-getStaffdata/:id', registrationController.getStaffById);
-
-
-// ending get staff data frm  decrption 
-
-
-// end  for delete api 
-
-router.post('/register-client', registrationController.createclient);
-
-router.post('/register-admin', registrationController.createadmin);
-
-
+router.post('/register-user', registrationController.createStaff);  //craete staff 
+router.post('/register-updateuser', registrationController.updateStaff);  // update staff
+router.put('/register-deleteUser', registrationController.deleteStaff);  // delete staff
+router.get('/register-getStaffdata/:id', registrationController.getStaffById); //get staff using id
 
 
 module.exports = router;

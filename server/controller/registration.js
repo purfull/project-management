@@ -1,75 +1,38 @@
 
 const { where } = require("../db");
 
+// updates staff
 const Staff = require("../models/User/StaffUser");
-const Client = require("../models/User/ClientUser");
-const Admin = require("../models/User/AdminUser")
-// updates
 const StaffUpdate = require("../models/User/StaffUser");
-// deletes
-const deleteStaff = require("../models/User/StaffUser")
+const deleteStaff = require("../models/User/StaffUser");
 
-// get staff by id 
+// updatecleint
+const Client = require("../models/User/ClientUser");
+const ClientUpdate = require('../models/User/ClientUser');
+const Clientdelete = require('../models/User/ClientUser');
 
-// const crypto = require('crypto');
-const cryptoJS = require("crypto-js")
-const encrypted = require('encrypted')
-const bodyParser = require('body-parser')
-const { decrypt } = require("dotenv");
-
-
-
-
-// const algorithm = 'aes-256-cbc';
-// const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
-
-// function decryptPassword(encryptedData) {
-//     const [ivHex, encryptedPassword] = encryptedData.split(':');
-//     const iv = Buffer.from(ivHex, 'hex');
-//     const decipher = crypto.createDecipheriv(algorithm, key, iv);
-//     let decrypted = decipher.update(encryptedPassword, 'hex', 'utf8');
-//     decrypted += decipher.final('utf8');
-//     return decrypted;
-// }
-
-// function encryptPassword(password) {
-//     const iv = crypto.randomBytes(16); // Generate a new IV for each password
-//     const cipher = crypto.createCipheriv(algorithm, key, iv);
-//     let encrypted = cipher.update(password, 'utf8', 'hex');
-//     encrypted += cipher.final('hex');
-//     // Store the IV with the encrypted password
-//     return `${iv.toString('hex')}:${encrypted}`;
-// }
-
-
-// enctypt
-
-            function encryptedPassword(password) {
-                const Password = cryptoJS.AES.encryptedPassword(password).toString();
-                return Password
-            }
+//update admin
+const Admin = require("../models/User/AdminUser");
+const adminUpdate = require('../models/User/AdminUser');
+const admindelete = require("../models//User/AdminUser");
 
 
 module.exports = {
 
+ // starting  staffuserr
+
     getStaffById: async (req, res) => {
         const { id } = req.params;
-    
+
         try {
             const getStaff = await Staff.findOne({ where: { id } });
-            // const decryptedPassword = decryptPassword(getStaff.password);
             res.status(200).json({ data: getStaff, });
         } catch (error) {
             console.log("error", error);
             res.status(500).json({ message: "Failed to retrieve staff details" });
         }
     },
-
-       
-
-    // starting  staffuserr
-
-
+// end get staff
 
     createStaff: async (req, res) => {
 
@@ -91,16 +54,12 @@ module.exports = {
 
         } = req.body;
 
-        // password encryp
-        const encrypted = encryptedPassword(password) 
-
-
-        // ending staff decryption
+       
 
         try {
             const newstaff = await Staff.create({
                 user_name,
-                password:encrypted,
+                password,
                 email,
                 phone_number,
                 user_role,
@@ -122,12 +81,12 @@ module.exports = {
         }
 
 
-    },
+    },  
+//ending craete staff
 
 
-    // this is update for staffuser
-
-    updateStaff: async (req, res) => {
+// this is update for staffuser
+     updateStaff: async (req, res) => {
         const {
             id,
             user_name,
@@ -175,14 +134,10 @@ module.exports = {
             res.status(500).json({ message: "Failed to update staff" });
         }
     },
+// update ending for staff user
 
 
-
-    // update ending for staff user
-
-
-
-    // delete staff starting 
+// delete staff starting 
 
     deleteStaff: async (req, res) => {
 
@@ -213,13 +168,24 @@ module.exports = {
 
     },
 
-    //staff delete api ending 
+// delete staff ending 
 
 
-    // delete staff ending 
 
-
-    // staring cleint user
+// staring cleint user
+//get client 
+    getClientId:async (req, res) =>{
+        const {id} =req.params
+        try{
+            const getClient = await Client.findOne({where :{id}});
+            res.status(200).json({data :getClient});
+        }catch(error){
+            console.log("error",error);
+            res.status(500).json({message:"Failed to retrieve client details"})
+        }
+}, 
+//end client 
+//create client for client route 
 
     createclient: async (req, res) => {
 
@@ -241,8 +207,6 @@ module.exports = {
 
 
         } = req.body;
-        console.log(req.body);
-
 
         try {
             const newclient = await Client.create({
@@ -268,13 +232,99 @@ module.exports = {
             res.status(500).json({ message: "Failed to create clientuser" });
         }
 
+    }, 
+//enidng creaete cliet route
+
+ // update clent start 
+     updateClient : async(req, res)=>{
+
+        const {
+            id,
+            company_name,
+            cp_name,
+            user_name,
+            password,
+            cp_phone,
+            cp_email,
+            company_phone,
+            company_email,
+            company_logo,
+            address,
+            city,
+            state,
+            postal_code,
+            country,
+
+        } = req.body
+
+        try{
+            const clientResult = await ClientUpdate.update({
+                id,
+                company_name,
+                cp_name,
+                user_name,
+                password,
+                cp_phone,
+                cp_email,
+                company_phone,
+                company_email,
+                company_logo,
+                address,
+                city,
+                state,
+                postal_code,
+                country,
+            },
+            {
+                where: { id }
+            });
+            res.status(201).json({ data: clientResult.recordSet, message: "client updated successfully" });
+        } 
+         catch (error) {
+            console.error("Error to client update:", error);
+            res.status(500).json({ message: "Failed to update client" });
+        }
+    }, 
+//ending updateclient 
 
 
+ //deleteclient  
+    deleteClient : async (req, res)=>{
+            const {id} =req.body
+
+            try{
+                const deleteresult = await Clientdelete.update(
+                    {isActive:false},
+                    {where:{id}}
+                )
+                if (deleteresult[0] == 0) {
+
+                    return res.status(404).json({ message: 'Record not found' });
+                }
+    
+                res.status(200).json({ message: 'Record marked as inactive', deleteresult: deleteresult[true] });
+            }catch(error){
+                res.status(500).json({ message: "Error occurred:" + error.message });
+
+            }
+    },  
+ //ending client delete staff
+
+
+ // strating admin user 
+    //get admin 
+    getAdminId:async (req, res)=>{
+        const {id} = req.params
+        try{
+            const getAdmin = await Admin.findOne({where:{id}});
+            res.status(200).json({data:getAdmin})
+        }catch(error){
+            console.log("error",error);
+            res.status(500).json({message :"Failed to retrieve admin details"})
+        }
     },
 
-
-    // strating admin user 
-
+// create admin 
     createadmin: async (req, res) => {
 
         const {
@@ -303,15 +353,67 @@ module.exports = {
             console.error("Error creating newadmin:", error);
             res.status(500).json({ message: "Failed to create AdminUser" });
         }
+    },
+ //end create admin
 
 
+//update admin
+    updateAdmin:async(req, res)=>{
 
+        const {id}= req.body
+
+            const {
+                user_name,
+                password,
+                email,
+                phone_number,
+                admin_role,
+
+            }=req.body
+
+            try{
+                const adminResult = await adminUpdate.update({
+                    user_name,
+                    password,
+                    email,
+                    phone_number,
+                    admin_role,
+                },
+                {
+                    where: { id }
+                });
+                res.status(201).json({ data: adminResult.recordSet, message: "admin updated successfully" });
+            } catch(error){
+                console.error("Error to admin update:", error);
+                res.status(500).json({ message: "Failed to update admin" });
+            }
+    },
+////end admin delete 
+    
+
+//start  delete admin api 
+    deleteAdmin :async(req, res)=>{
+                const {id} =req.body
+                
+            try{
+                const admindeleteresult = await admindelete.update(
+                    {isActive:false},
+                    {where:{id}}
+                )
+                if (admindeleteresult[0] == 0) {
+
+                    return res.status(404).json({ message: 'Record not found' });
+                }
+    
+                res.status(200).json({ message: 'Record marked as inactive', admindeleteresult: admindeleteresult[true] });
+            }catch(error){
+                res.status(500).json({ message: "Error occurred:" + error.message });
+
+            }
     }
+ //end delete admin
 
-
-
-
-
+    
 
 }
 

@@ -5,7 +5,6 @@ const cors = require('cors');
 const pug = require('pug');
 const express = require('express');
 const app = express();
-
 const db = require('./db')
 
 // Middleware
@@ -19,50 +18,56 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+
 // Set Pug as the view engine
 app.set('view engine', 'pug');
+
 
 // Routes
 app.get('/check', (req, res) => {
     res.render('index', { message: "Hello, welcome!" });
 });
 
-const adminStaffRoutes = require('./routes/admin/staff');
-const adminClientRoutes = require('./routes/admin/client');
-const adminUserRoutes = require('./routes/admin/admin')
 
-// updates
+// only staff routes
+const adminStaffRoutes = require('./routes/admin/staff'); //main staff update
+const adminStaffupdates = require('./routes/admin/staff'); //staffupdate
+const adminStaffdelete = require('./routes/admin/staff'); // staffdelete
 
-const adminStaffupdates = require('./routes/admin/staff');
-
-// delete 
-
-const adminStaffdelete = require('./routes/admin/staff')
-
-
-// get dcrpt staff id 
-
-const admingetStaff = require('./routes/admin/staff')
-
-// ending dcrpt staff id 
-
-// nov 14  for body parser
+// only client routes
+const adminClientRoutes = require('./routes/admin/client');  //main client routes
+const adminClientupdate =require('./routes/admin/client');  // udpatre client 
+const adminClientdelete = require('./routes/admin/client'); //delete client
 
 
+// only admin routes
+const adminUserRoutes = require('./routes/admin/admin'); //main admin file
+const adminUserupdate = require('./routes/admin/admin'); // update admin
+const adminUserdelete = require('./routes/admin/admin'); // admin delete
+
+
+
+// middle weres for staff uses only 
 app.use('/admin/staff', adminStaffRoutes);
-app.use('/admin/client', adminClientRoutes);
-app.use('/admin/admin',adminUserRoutes);
-
-
-// updates for staff and althing
-
 app.use('/admin/staff',adminStaffupdates);
-
-// delete 
 app.use('/admin/staff', adminStaffdelete);
 
-// get dcrpt staff id 
-app.use('/admin/staff/',admingetStaff);
+
+// // middle weres for cleint uses only 
+app.use('/admin/client', adminClientRoutes);
+app.use('/admin/client',adminClientupdate);
+app.use('/admin/client',adminClientdelete);
+
+
+
+// middle weres for admin uses only 
+app.use('/admin/admin',adminUserRoutes);
+app.use('/admin/admin',adminUserupdate);
+app.use("/admin/admin",adminUserdelete);
+
+
+
+
 
 
 db.sync({ force: false })
