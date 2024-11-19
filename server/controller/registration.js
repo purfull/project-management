@@ -5,7 +5,7 @@ const { where } = require("../db");
 const Staff = require("../models/User/StaffUser");
 const StaffUpdate = require("../models/User/StaffUser");
 const deleteStaff = require("../models/User/StaffUser");
-
+const loginstaff=  require('../models/User/StaffUser')
 // updatecleint
 const Client = require("../models/User/ClientUser");
 const ClientUpdate = require('../models/User/ClientUser');
@@ -15,6 +15,8 @@ const Clientdelete = require('../models/User/ClientUser');
 const Admin = require("../models/User/AdminUser");
 const adminUpdate = require('../models/User/AdminUser');
 const admindelete = require("../models//User/AdminUser");
+
+
 
 //libraraies for encrypt and decrypt
 const crypto = require('crypto');
@@ -67,6 +69,54 @@ module.exports = {
 
     encryptPassword, /// encrypt all routes user ,cleint, admin
     decryptPassword, //  decrpt all routes user ,cleint, admin
+
+    // Stafflogin: async (req, res) => {
+
+    //     const { user_name } = req.body
+    //     try {
+    //             const user = await user.findone({where :{id}})
+    //             if (!user) {
+    //                 return res.status(404).json({ message: 'User not found' });
+    //             }
+    //             res.status(200).json({
+    //                 message: 'User found',
+    //                 data: {
+    //                     user_name: user.user_name
+    //                 }
+    //             })
+    //     }
+    //     catch(error){
+    //             console.log(error+"error to find username");
+    //             res.status(500).json({message:'internal server err '})
+                
+    //     }
+           
+    // },//staff login 
+    Stafflogin: async (req, res) => {
+        const { user_name,password } = req.body;
+    
+        try {
+            // Find the user by their username
+            const userRecord = await loginstaff.findOne({ where: { user_name } });
+    
+            
+            if (!userRecord) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+    
+            res.status(200).json({
+                message: 'User found',
+                data: {
+                    user_name: userRecord.user_name
+                }
+            });
+    
+        } catch (error) {
+            console.log("Error finding user:", error);
+            res.status(500).json({ message: 'Server error' });
+        }
+    },
+
 
 
     getStaffById: async (req, res) => {
@@ -251,7 +301,6 @@ module.exports = {
 
     // staring cleint user
     //get client 
-
     getClientId: async (req, res) => {
         const { id } = req.params;
 
@@ -259,7 +308,10 @@ module.exports = {
             const clientRecord = await Client.findOne({ where: { id } });
 
             if (clientRecord) {
+                // Assuming the 'password' and 'iv' are stored separately in the database
+                // const decryptedPassword = decryptPassword(clientRecord.password, clientRecord.iv);
                 const decryptedPassword = decryptPassword(clientRecord.password);
+
 
                 res.status(200).json({
                     data: {
@@ -287,7 +339,6 @@ module.exports = {
             res.status(500).json({ message: "Failed to retrieve client details" });
         }
     },
-
     //end client 
     //create client for client route 
     createclient: async (req, res) => {
@@ -416,15 +467,15 @@ module.exports = {
 
     // strating admin user 
     //get admin 
-         getAdminId : async (req, res) => {
+    getAdminId: async (req, res) => {
         const { id } = req.params;
-    
+
         try {
-            const adminRecord = await Admin.findOne({ where: { id } }); 
-    
+            const adminRecord = await Admin.findOne({ where: { id } });
+
             if (adminRecord) {
                 const decryptedPassword = decryptPassword(adminRecord.password);
-    
+
                 res.status(200).json({
                     data: {
                         user_name: adminRecord.user_name,
