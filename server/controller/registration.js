@@ -10,19 +10,23 @@ const loginstaff=  require('../models/User/StaffUser')
 const Client = require("../models/User/ClientUser");
 const ClientUpdate = require('../models/User/ClientUser');
 const Clientdelete = require('../models/User/ClientUser');
+// const loginclient = require('../models/User/ClientUser')
 
 //update admin
 const Admin = require("../models/User/AdminUser");
 const adminUpdate = require('../models/User/AdminUser');
 const admindelete = require("../models//User/AdminUser");
 
-
+const jwt = require('jsonwebtoken');
+const bcrypt=require('bcrypt')
 
 //libraraies for encrypt and decrypt
 const crypto = require('crypto');
 const { Buffer } = require('buffer');
+const { decode } = require("punycode");
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '1fdf1ebbdac54ece8b28360ea84e9d15a82b5fff14197d36ce42ecdaa29d361b';
 const ENCRYPTION_IV = process.env.ENCRYPTION_IV || '7d51aeeb7de5bfd0d37507aa1361eff7';
+
 
 
 //function for  encyrpt password
@@ -70,52 +74,68 @@ module.exports = {
     encryptPassword, /// encrypt all routes user ,cleint, admin
     decryptPassword, //  decrpt all routes user ,cleint, admin
 
-    // Stafflogin: async (req, res) => {
-
-    //     const { user_name } = req.body
-    //     try {
-    //             const user = await user.findone({where :{id}})
-    //             if (!user) {
-    //                 return res.status(404).json({ message: 'User not found' });
-    //             }
-    //             res.status(200).json({
-    //                 message: 'User found',
-    //                 data: {
-    //                     user_name: user.user_name
-    //                 }
-    //             })
-    //     }
-    //     catch(error){
-    //             console.log(error+"error to find username");
-    //             res.status(500).json({message:'internal server err '})
-                
-    //     }
-           
-    // },//staff login 
+  //login stafff
     Stafflogin: async (req, res) => {
-        const { user_name,password } = req.body;
+        const { user_name, password } = req.body;
     
         try {
-            // Find the user by their username
             const userRecord = await loginstaff.findOne({ where: { user_name } });
     
-            
             if (!userRecord) {
                 return res.status(404).json({ message: 'User not found' });
             }
+            console.log('Password from request:', password);
+            console.log('Password from DB:', userRecord.password);
+            
+            const pass = decryptPassword(userRecord.password)
+            // Verify the password // Use await here
+    
+            console.log(pass);
+            
+            if (pass != password) {
+                
+                return res.status(401).json({ message: "Access denied: Incorrect password" });
+            }
+    
+            // JWT token 
+            const token = jwt.sign(
+                { id: userRecord.id, user_name: userRecord.user_name }, // Payload for jwt
+                process.env.ACCESS_SECRET_KEY, 
+                { expiresIn: '8h' }
+            );
     
             res.status(200).json({
-                message: 'User found',
+                message: 'Login successful',
                 data: {
-                    user_name: userRecord.user_name
-                }
+                    user_name: userRecord.user_name,
+                    token
+                },
             });
-    
         } catch (error) {
-            console.log("Error finding user:", error);
+            console.error("Error finding user:", error);
             res.status(500).json({ message: 'Server error' });
         }
     },
+    
+    verifystaffttoken: async (req, res, next) => {
+
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+    
+        if (!token) {
+            return res.status(500).json({ message: 'No token' });
+        }
+    
+        jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: 'Invalid or expired token' });
+            }
+    
+            req.userRecord = decoded;
+            next();
+        });
+    },
+    //verify token
 
 
 
@@ -301,6 +321,53 @@ module.exports = {
 
     // staring cleint user
     //get client 
+
+
+    // clientLogin : async (req, res) => {
+    //     const { user_name, password } = req.body;
+    
+    //     try {
+    //         // Find the client record in the database
+    //         const userRecord = await loginclient.findOne({ where: { user_name } });
+    
+    //         if (!userRecord) {
+    //             return res.status(404).json({ message: "Client not found" });
+    //         }
+    
+    //         const isMatch = await bcrypt.compare(password, userRecord.password);
+    //         if (!isMatch) {
+    //             return res.status(401).json({ message: "Access denied: Incorrect password" });
+    //         }
+    
+    //         // Generate JWT token
+    //         const token = jwt.sign(
+    //             {
+    //                 id: userRecord.id,
+    //                 user_name: userRecord.user_name,
+    //             },
+    //             process.env.ACCESS_SECRET_KEY, 
+    //             { expiresIn: "8h" } // Token expiration
+    //         );
+    
+    //         // Respond with success
+    //         res.status(200).json({
+    //             message: "Login successful",
+    //             data: {
+    //                 user_name: userRecord.user_name,
+    //                 token,
+    //             },
+    //         });
+    //     } catch (error) {
+    //         console.error("Error during client login:", error);
+    //         res.status(500).json({ message: "Server error" });
+    //     }
+    // },
+
+
+    
+
+
+
     getClientId: async (req, res) => {
         const { id } = req.params;
 
@@ -308,8 +375,7 @@ module.exports = {
             const clientRecord = await Client.findOne({ where: { id } });
 
             if (clientRecord) {
-                // Assuming the 'password' and 'iv' are stored separately in the database
-                // const decryptedPassword = decryptPassword(clientRecord.password, clientRecord.iv);
+               
                 const decryptedPassword = decryptPassword(clientRecord.password);
 
 

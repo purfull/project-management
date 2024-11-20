@@ -286,4 +286,14 @@ router.get('/register-getClientdata/:id', registrationController.getClientId); /
 
 
 
+
+
+
+
+
+
+
+
+// router.post('/register-Clientlogin',registrationController.clientLogin)//staff login
+
 module.exports = router;

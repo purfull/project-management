@@ -8,6 +8,7 @@ const express = require('express');
 const app = express();
 const db = require('./db')
 
+
 //swagger 
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -36,6 +37,7 @@ const swaggerOptions = {
   apis: ['./routes/**/*.js','./server.js'], // Path to the API docs (ensure this file name matches your actual file)
 };
 
+const a = require('./controller/registration')
 //swagger docs and middleweres
 const swaggerDocs = swaggerJsdoc(swaggerOptions);  //swagger doc
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -62,10 +64,20 @@ app.set('view engine', 'pug');
  *             schema:
  *               type: string
  */
-app.get('/get', (req, res) => {
-  res.send("Helloo bhai World");
+app.get('/get',a.verifystaffttoken, (req, res) => {
+  const auth = req.userRecord
+  if (auth){ 
+    
+    res.send("Helloo bhai World"+ auth);
+
+  }
+  res.send("permission denied")
 });
 
+
+// app.get('/get',(req, res)=>{
+//   res.send("Helloo bhai World")
+// })
 
 
 
@@ -74,8 +86,7 @@ app.get('/get', (req, res) => {
 const adminStaffRoutes = require('./routes/admin/staff'); //main staff update
 const adminStaffupdates = require('./routes/admin/staff'); //staffupdate
 const adminStaffdelete = require('./routes/admin/staff'); // staffdelete
-const adminStafflogin = require('./routes/admin/staff'); // staff login 
-
+const adminStafflogin = require('./routes/admin/staff'); // staff login
 // only client routes
 const adminClientRoutes = require('./routes/admin/client');  //main client routes
 const adminClientupdate = require('./routes/admin/client');  // udpatre client 
@@ -96,6 +107,7 @@ const { VERSION } = require('sequelize/lib/query-types');//query
 
 // middle weres for staff uses only 
 app.use('/admin/staff', [adminStaffRoutes, adminStaffupdates, adminStaffdelete,adminStafflogin]);
+
 
 // app.use('/admin/staff',adminStafflogin);
 
