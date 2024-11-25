@@ -3,9 +3,6 @@ const { where } = require("../db");
 
 // updates staff
 const Staff = require("../models/User/StaffUser");
-const StaffUpdate = require("../models/User/StaffUser");
-const deleteStaff = require("../models/User/StaffUser");
-const loginstaff=  require('../models/User/StaffUser')
 // updatecleint
 const Client = require("../models/User/ClientUser");
 const ClientUpdate = require('../models/User/ClientUser');
@@ -69,7 +66,6 @@ function decryptPassword(encryptedPassword) {
 
 
 
-module.exports = {
 
     encryptPassword, /// encrypt all routes user ,cleint, admin
     decryptPassword, //  decrpt all routes user ,cleint, admin
@@ -79,7 +75,7 @@ module.exports = {
         const { user_name, password } = req.body;
     
         try {
-            const userRecord = await loginstaff.findOne({ where: { user_name } });
+            const userRecord = await Staff.findOne({ where: { user_name } });
     
             if (!userRecord) {
                 return res.status(404).json({ message: 'User not found' });
@@ -254,7 +250,7 @@ module.exports = {
         try {
             const encryptedPassword = encryptPassword(password);
 
-            const updateStaff = await StaffUpdate.update({
+            const updateStaff = await Staff.update({
                 id,
                 user_name,
                 password: encryptedPassword,
@@ -293,7 +289,7 @@ module.exports = {
 
         try {
 
-            const result = await deleteStaff.update(
+            const result = await Staff.update(
 
                 { isActive: false },
                 { where: { id } }
