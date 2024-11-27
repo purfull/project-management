@@ -37,7 +37,8 @@ const swaggerOptions = {
   apis: ['./routes/**/*.js','./server.js'], // Path to the API docs (ensure this file name matches your actual file)
 };
 
-const a = require('./controller/registration')
+
+const a = require('./controller/staff/registration')
 //swagger docs and middleweres
 const swaggerDocs = swaggerJsdoc(swaggerOptions);  //swagger doc
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -64,6 +65,7 @@ app.set('view engine', 'pug');
  *             schema:
  *               type: string
  */
+
 app.get('/get',a.verifystaffttoken, (req, res) => {
   const auth = req.userRecord
   if (auth){ 
@@ -75,28 +77,17 @@ app.get('/get',a.verifystaffttoken, (req, res) => {
 });
 
 
-// app.get('/get',(req, res)=>{
-//   res.send("Helloo bhai World")
-// })
-
-
-
-
 // only staff routes
 const adminStaffRoutes = require('./routes/admin/staff'); //main staff update
-const adminStaffupdates = require('./routes/admin/staff'); //staffupdate
-const adminStaffdelete = require('./routes/admin/staff'); // staffdelete
-const adminStafflogin = require('./routes/admin/staff'); // staff login
 // only client routes
-const adminClientRoutes = require('./routes/admin/client');  //main client routes
-const adminClientupdate = require('./routes/admin/client');  // udpatre client 
-const adminClientdelete = require('./routes/admin/client'); //delete client
 
+const adminClientRoutes = require('./routes/admin/client')
 
 // only admin routes
 const adminUserRoutes = require('./routes/admin/admin'); //main admin file
-const adminUserupdate = require('./routes/admin/admin'); // update admin
-const adminUserdelete = require('./routes/admin/admin'); // admin delete
+
+//only task 
+const taskMainRoutes = require('./routes/admin/tasks') //main task
 
 
 
@@ -106,19 +97,16 @@ const { VERSION } = require('sequelize/lib/query-types');//query
 
 
 // middle weres for staff uses only 
-app.use('/admin/staff', [adminStaffRoutes, adminStaffupdates, adminStaffdelete,adminStafflogin]);
-
-
-// app.use('/admin/staff',adminStafflogin);
-
+app.use('/admin/staff',adminStaffRoutes );
 
 // // middle weres for cleint uses only 
-app.use('/admin/client', [adminClientRoutes, adminClientupdate, adminClientdelete]);
-
-
+app.use('/admin/client', adminClientRoutes);
 
 // middle weres for admin uses only 
-app.use('/admin/admin', [adminUserRoutes, adminUserupdate, adminUserdelete]);
+app.use('/admin/admin', adminUserRoutes);
+
+// middle weres for task uses only 
+app.use('/admin/task',taskMainRoutes);
 
 
 

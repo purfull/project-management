@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 
-const registrationController = require('../../controller/registration');
+const adminregistrationController = require('../../controller/admin/registration');
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ const registrationController = require('../../controller/registration');
  *       500:
  *         description: Internal Server Error (if creation fails)
  */
-router.post('/register-admin', registrationController.createadmin)//create admin 
+router.post('/register-admin',adminregistrationController.verifystaffttoken, adminregistrationController.createadmin)//create admin 
 
 /**
  * @swagger
@@ -144,7 +144,7 @@ router.post('/register-admin', registrationController.createadmin)//create admin
  *         description: Internal Server Error (if the update fails)
  */
 
-router.put('/register-updateadmin', registrationController.updateAdmin);
+router.put('/register-updateadmin',adminregistrationController.verifystaffttoken, adminregistrationController.updateAdmin);
 
 
 /**
@@ -187,7 +187,7 @@ router.put('/register-updateadmin', registrationController.updateAdmin);
  *         description: Internal Server Error (if an error occurs while deactivating the admin)
  */
 
-router.delete('/register-deleteAdmin', registrationController.deleteAdmin);
+router.delete('/register-deleteAdmin', adminregistrationController.verifystaffttoken,adminregistrationController.deleteAdmin);
 
 /**
  * @swagger
@@ -240,8 +240,90 @@ router.delete('/register-deleteAdmin', registrationController.deleteAdmin);
  *       500:
  *         description: Internal server error while fetching admin details
  */
-router.get('/register-getadmindata/:id', registrationController.getAdminId); 
+router.get('/register-getadmindata/:id',adminregistrationController.verifystaffttoken, adminregistrationController.getAdminId); 
 
 
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Admin Management
+ *     description: Endpoints for managing admin accounts and authentication
+ *
+ * /admin/admin/register-adminlogin:
+ *   post:
+ *     tags:
+ *       - Admin Management
+ *     summary: Authenticate admin login
+ *     description: Verifies admin credentials (username and password) and returns a JWT token if authentication is successful.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *                 description: Admin username.
+ *                 example: "admin123"
+ *               password:
+ *                 type: string
+ *                 description: Admin password.
+ *                 example: "password123"
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user_name:
+ *                       type: string
+ *                       example: "admin123"
+ *                     token:
+ *                       type: string
+ *                       description: JWT token for authentication.
+ *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       401:
+ *         description: Access denied due to incorrect password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Access denied: Incorrect password"
+ *       404:
+ *         description: Admin not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "admin not found"
+ *       500:
+ *         description: Internal server error while processing login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error"
+ */
+
+router.post('/register-adminlogin',adminregistrationController.verifystaffttoken,adminregistrationController.adminlogin);
 
 module.exports = router;

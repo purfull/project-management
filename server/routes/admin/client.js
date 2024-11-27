@@ -2,8 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 
-const registrationController = require('../../controller/registration');
-
+const clientregistercontroll = require('../../controller/client/registration');
 
 /**
  * @swagger
@@ -78,7 +77,7 @@ const registrationController = require('../../controller/registration');
  *       500:
  *         description: Internal Server Error
  */
-router.post('/register-client', registrationController.createclient); //completedn
+router.post('/register-client',clientregistercontroll.verifystaffttoken, clientregistercontroll.createclient); //completedn
 
 
 
@@ -162,7 +161,7 @@ router.post('/register-client', registrationController.createclient); //complete
  *       500:
  *         description: Internal Server Error (for unexpected issues during update)
  */
-router.put('/register-updateclient',registrationController.updateClient) // udpate client
+router.put('/register-updateclient',clientregistercontroll.verifystaffttoken,clientregistercontroll.updateClient) // udpate client
 
 
 
@@ -204,7 +203,7 @@ router.put('/register-updateclient',registrationController.updateClient) // udpa
  *       500:
  *         description: Internal Server Error (if there is an error during the deletion process)
  */
-router.delete('/register-deleteclient',registrationController.deleteClient) // delete client
+router.delete('/register-deleteclient',clientregistercontroll.verifystaffttoken,clientregistercontroll.deleteClient) // delete client
 
 
 
@@ -282,18 +281,88 @@ router.delete('/register-deleteclient',registrationController.deleteClient) // d
  *       500:
  *         description: Internal Server Error (if there is an error retrieving client details)
  */
-router.get('/register-getClientdata/:id', registrationController.getClientId); //get staff using id
+router.get('/register-getClientdata/:id',clientregistercontroll.verifystaffttoken, clientregistercontroll.getClientId); //get staff using id
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Client Management
+ *     description: Endpoints for managing client authentication
+ *
+ * /admin/client/register-Clientlogin:
+ *   post:
+ *     tags:
+ *       - Client Management
+ *     summary: Authenticate client login
+ *     description: Verifies client credentials (username and password) and returns a JWT token if authentication is successful.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *                 description: Client username.
+ *                 example: "john_doe"
+ *               password:
+ *                 type: string
+ *                 description: Client password.
+ *                 example: "securePassword123"
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user_name:
+ *                       type: string
+ *                       example: "john_doe"
+ *                     token:
+ *                       type: string
+ *                       description: JWT token for authentication.
+ *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       401:
+ *         description: Access denied due to incorrect password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Access denied: Incorrect password"
+ *       404:
+ *         description: Client not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Client not found"
+ *       500:
+ *         description: Internal server error while processing login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error"
+ */
 
-
-
-
-
-
-
-
-
-
-// router.post('/register-Clientlogin',registrationController.clientLogin)//staff login
+router.post('/register-Clientlogin',clientregistercontroll.clientlogin)//staff login
 
 module.exports = router;

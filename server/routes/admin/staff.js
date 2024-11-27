@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 
-const registrationController = require('../../controller/registration');
+const staffregistrationController = require('../../controller/staff/registration');
 
 
 /**
@@ -76,7 +76,7 @@ const registrationController = require('../../controller/registration');
 *       500:
 *         description: Internal Server Error
 */
-router.post('/register-user', registrationController.createStaff);  // Create staff details
+router.post('/register-user',staffregistrationController.verifystaffttoken, staffregistrationController.createStaff);  // Create staff details
 
 
 
@@ -153,7 +153,7 @@ router.post('/register-user', registrationController.createStaff);  // Create st
  *       500:
  *         description: Internal Server Error
  */
-router.put('/register-updateuser', registrationController.updateStaff);  // update staff
+router.put('/register-updateuser',staffregistrationController.verifystaffttoken, staffregistrationController.updateStaff);  // update staff
 
 
 /**
@@ -206,7 +206,7 @@ router.put('/register-updateuser', registrationController.updateStaff);  // upda
  *                   type: string
  *                   example: "Error occurred: [error message]"
  */
-router.delete('/register-deleteUser', registrationController.deleteStaff);  // Delete staff (soft delete)
+router.delete('/register-deleteUser',staffregistrationController.verifystaffttoken ,staffregistrationController.deleteStaff);  // Delete staff (soft delete)
 
 
 
@@ -299,24 +299,92 @@ router.delete('/register-deleteUser', registrationController.deleteStaff);  // D
  *                   type: string
  *                   example: "Failed to retrieve staff details"
  */
-router.get('/register-getStaffdata/:id', registrationController.getStaffById); // Get staff using ID
+router.get('/register-getStaffdata/:id',staffregistrationController.verifystaffttoken, staffregistrationController.getStaffById); // Get staff using ID
 
 
 
 
 
+/**
+ * @swagger
+
+ *
+ * /admin/staff/register-stafflogin:
+ *   post:
+ *     tags:
+ *     
+ *     summary: Authenticate staff login
+ *     description: Verifies staff credentials (username and password) and returns a JWT token if authentication is successful.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *                 description: Staff username.
+ *                 example: "staff123"
+ *               password:
+ *                 type: string
+ *                 description: Staff password.
+ *                 example: "staffPassword123"
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user_name:
+ *                       type: string
+ *                       example: "staff123"
+ *                     accestoken:
+ *                       type: string
+ *                       description: JWT token for authentication.
+ *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       401:
+ *         description: Access denied due to incorrect password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Access denied: Incorrect password"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Internal server error while processing login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error"
+ */
 
 
-
-
-
-
-
-
-
-
-router.post('/register-stafflogin',registrationController.Stafflogin)//staff logirouter
-router.post('/register-staffverify', registrationController.verifystaffttoken)
+router.post('/register-stafflogin',staffregistrationController.Stafflogin)//staff logirouter
 
 
 module.exports = router;
