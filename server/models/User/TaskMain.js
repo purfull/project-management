@@ -19,6 +19,9 @@ module.exports = sequelize.define(
         status: {
             type: DataTypes.STRING
         },
+        remarks:{
+            type:DataTypes.STRING
+        },
         subject: {
             type: DataTypes.STRING
         },

@@ -387,4 +387,6 @@ router.get('/register-getStaffdata/:id',staffregistrationController.verifystafft
 router.post('/register-stafflogin',staffregistrationController.Stafflogin)//staff logirouter
 
 
+
+
 module.exports = router;

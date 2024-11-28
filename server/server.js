@@ -89,7 +89,8 @@ const adminUserRoutes = require('./routes/admin/admin'); //main admin file
 //only task 
 const taskMainRoutes = require('./routes/admin/tasks') //main task
 
-
+//only perfomnace 
+const perfomaceMainRoutes = require('./routes/admin/performance')//performance
 
 
 const { VERSION } = require('sequelize/lib/query-types');//query 
@@ -108,7 +109,7 @@ app.use('/admin/admin', adminUserRoutes);
 // middle weres for task uses only 
 app.use('/admin/task',taskMainRoutes);
 
-
+app.use('/admin/performance',perfomaceMainRoutes);
 
 
 
