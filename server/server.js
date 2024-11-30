@@ -6,7 +6,7 @@ const cors = require('cors');
 const pug = require('pug');
 const express = require('express');
 const app = express();
-const db = require('./db')
+const db = require('./db');
 
 
 //swagger 
@@ -15,6 +15,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 // Middleware
 app.use(express.json());
+//body parser
 
 // CORS options
 const corsOptions = {
@@ -34,7 +35,7 @@ const swaggerOptions = {
       description: 'Its all about project magemnet apis',
     },
   },
-  apis: ['./routes/**/*.js','./server.js'], // Path to the API docs (ensure this file name matches your actual file)
+  apis: ['./routes/**/*.js', './server.js'], // Path to the API docs (ensure this file name matches your actual file)
 };
 
 
@@ -66,11 +67,11 @@ app.set('view engine', 'pug');
  *               type: string
  */
 
-app.get('/get',a.verifystaffttoken, (req, res) => {
+app.get('/get', a.verifystaffttoken, (req, res) => {
   const auth = req.userRecord
-  if (auth){ 
-    
-    res.send("Helloo bhai World"+ auth);
+  if (auth) {
+
+    res.send("Helloo bhai World" + auth);
 
   }
   res.send("permission denied")
@@ -87,10 +88,16 @@ const adminClientRoutes = require('./routes/admin/client')
 const adminUserRoutes = require('./routes/admin/admin'); //main admin file
 
 //only task 
-const taskMainRoutes = require('./routes/admin/tasks') //main task
+const taskMainRoutes = require('./routes/admin/tasks'); //main task
 
 //only perfomnace 
-const perfomaceMainRoutes = require('./routes/admin/performance')//performance
+const perfomaceMainRoutes = require('./routes/admin/performance');//performance
+
+//email routes
+const emailRoutes = require('./routes/admin/email');
+
+//leave route
+const routesLeave = require('./routes/admin/leaveDays');
 
 
 const { VERSION } = require('sequelize/lib/query-types');//query 
@@ -98,7 +105,7 @@ const { VERSION } = require('sequelize/lib/query-types');//query
 
 
 // middle weres for staff uses only 
-app.use('/admin/staff',adminStaffRoutes );
+app.use('/admin/staff', adminStaffRoutes);
 
 // // middle weres for cleint uses only 
 app.use('/admin/client', adminClientRoutes);
@@ -107,10 +114,14 @@ app.use('/admin/client', adminClientRoutes);
 app.use('/admin/admin', adminUserRoutes);
 
 // middle weres for task uses only 
-app.use('/admin/task',taskMainRoutes);
+app.use('/admin/task', taskMainRoutes);
+//performance
+app.use('/admin/performance', perfomaceMainRoutes);
+//email
+app.use('/admin/email',emailRoutes);
 
-app.use('/admin/performance',perfomaceMainRoutes);
-
+//leave middlewere
+app.use('/admin/leave',routesLeave);
 
 
 db.sync({ force: false })

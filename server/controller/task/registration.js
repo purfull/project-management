@@ -6,14 +6,12 @@ const router = require('express').Router();
 const { createTask } = require('../../controller/task/registration');
 const { where } = require('sequelize');
 
-// const upload = multer({ dest: 'files/' })
 
 module.exports = {
 
     createTask: async (req, res) => {
 
         const {
-
             id,
             assinged_by,
             assigned_to,
