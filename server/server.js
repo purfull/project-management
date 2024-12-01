@@ -94,7 +94,7 @@ const taskMainRoutes = require('./routes/admin/tasks'); //main task
 const perfomaceMainRoutes = require('./routes/admin/performance');//performance
 
 //email routes
-const emailRoutes = require('./routes/admin/email');
+const emailRoutes = require('./routes/admin/email');//email
 
 //leave route
 const routesLeave = require('./routes/admin/leaveDays');
@@ -115,12 +115,14 @@ app.use('/admin/admin', adminUserRoutes);
 
 // middle weres for task uses only 
 app.use('/admin/task', taskMainRoutes);
-//performance
+
+// middle weres for performance uses only 
 app.use('/admin/performance', perfomaceMainRoutes);
-//email
+
+// middle weres for email uses only 
 app.use('/admin/email',emailRoutes);
 
-//leave middlewere
+// middle weres for leave uses only 
 app.use('/admin/leave',routesLeave);
 
 

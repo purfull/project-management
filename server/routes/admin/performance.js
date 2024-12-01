@@ -10,7 +10,7 @@ const performanceregiscontroller = require("../../controller/performance/registr
 
 
 
-router.post('/register-performance', performanceregiscontroller.performancetracker)
+router.post('/register-performance',performanceregiscontroller.verifystaffttoken, performanceregiscontroller.performancetracker)
 
 
 module.exports= router

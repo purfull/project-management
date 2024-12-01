@@ -324,6 +324,6 @@ router.get('/register-getadmindata/:id',adminregistrationController.verifystafft
  *                   example: "Server error"
  */
 
-router.post('/register-adminlogin',adminregistrationController.verifystaffttoken,adminregistrationController.adminlogin);
+router.post('/register-adminlogin',adminregistrationController.adminlogin);
 
 module.exports = router;

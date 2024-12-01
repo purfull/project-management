@@ -65,8 +65,17 @@ router.post('/uploads', upload.array('file',10), (req, res) => {
 
 
 
-router.post('/register-task',taskregistrationController.createTask);
+router.post('/register-task',taskregistrationController.verifystaffttoken,taskregistrationController.createTask);
 
-router.put('/register-updatetask',taskregistrationController.updateTask)
+
+
+
+
+
+
+
+
+
+router.put('/register-updatetask',taskregistrationController.verifystaffttoken,taskregistrationController.updateTask)
 
 module.exports = router;

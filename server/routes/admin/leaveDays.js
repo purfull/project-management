@@ -11,4 +11,4 @@ router.post('/register-leave',leaveregistrationController.verifystaffttoken,leav
 
 
 
-module.exports= router
+module.exports= router;
