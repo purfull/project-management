@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router();
 
+const tokens = require('../../controller/staff/registration')
+
 
 const clientregistercontroll = require('../../controller/client/registration');
 
@@ -77,7 +79,7 @@ const clientregistercontroll = require('../../controller/client/registration');
  *       500:
  *         description: Internal Server Error
  */
-router.post('/register-client',clientregistercontroll.verifystaffttoken, clientregistercontroll.createclient); //completedn
+router.post('/register-client',tokens.verifystaffttoken, clientregistercontroll.createclient); //completedn
 
 
 
@@ -161,7 +163,7 @@ router.post('/register-client',clientregistercontroll.verifystaffttoken, clientr
  *       500:
  *         description: Internal Server Error (for unexpected issues during update)
  */
-router.put('/register-updateclient',clientregistercontroll.verifystaffttoken,clientregistercontroll.updateClient) // udpate client
+router.put('/update-client',tokens.verifystaffttoken,clientregistercontroll.updateClient) // udpate client
 
 
 
@@ -203,7 +205,7 @@ router.put('/register-updateclient',clientregistercontroll.verifystaffttoken,cli
  *       500:
  *         description: Internal Server Error (if there is an error during the deletion process)
  */
-router.delete('/register-deleteclient',clientregistercontroll.verifystaffttoken,clientregistercontroll.deleteClient) // delete client
+router.delete('/delete-client',tokens.verifystaffttoken,clientregistercontroll.deleteClient) // delete client
 
 
 
@@ -281,7 +283,7 @@ router.delete('/register-deleteclient',clientregistercontroll.verifystaffttoken,
  *       500:
  *         description: Internal Server Error (if there is an error retrieving client details)
  */
-router.get('/register-getClientdata/:id',clientregistercontroll.verifystaffttoken, clientregistercontroll.getClientId); //get staff using id
+router.get('/getclient-data/:id',tokens.verifystaffttoken, clientregistercontroll.getClientId); //get staff using id
 
 /**
  * @swagger
@@ -363,6 +365,6 @@ router.get('/register-getClientdata/:id',clientregistercontroll.verifystaffttoke
  *                   example: "Server error"
  */
 
-router.post('/register-Clientlogin',clientregistercontroll.clientlogin)//staff login
+router.post('/clientlogin',clientregistercontroll.clientlogin)//staff login
 
 module.exports = router;

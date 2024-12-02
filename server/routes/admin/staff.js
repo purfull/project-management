@@ -153,7 +153,7 @@ router.post('/register-user',staffregistrationController.verifystaffttoken, staf
  *       500:
  *         description: Internal Server Error
  */
-router.put('/register-updateuser',staffregistrationController.verifystaffttoken, staffregistrationController.updateStaff);  // update staff
+router.put('/update-user',staffregistrationController.verifystaffttoken, staffregistrationController.updateStaff);  // update staff
 
 
 /**
@@ -206,7 +206,7 @@ router.put('/register-updateuser',staffregistrationController.verifystaffttoken,
  *                   type: string
  *                   example: "Error occurred: [error message]"
  */
-router.delete('/register-deleteUser',staffregistrationController.verifystaffttoken ,staffregistrationController.deleteStaff);  // Delete staff (soft delete)
+router.delete('/delete-user',staffregistrationController.verifystaffttoken ,staffregistrationController.deleteStaff);  // Delete staff (soft delete)
 
 
 
@@ -299,7 +299,7 @@ router.delete('/register-deleteUser',staffregistrationController.verifystaffttok
  *                   type: string
  *                   example: "Failed to retrieve staff details"
  */
-router.get('/register-getStaffdata/:id',staffregistrationController.verifystaffttoken, staffregistrationController.getStaffById); // Get staff using ID
+router.get('/getstaff-data/:id',staffregistrationController.verifystaffttoken, staffregistrationController.getStaffById); // Get staff using ID
 
 
 
@@ -384,7 +384,7 @@ router.get('/register-getStaffdata/:id',staffregistrationController.verifystafft
  */
 
 
-router.post('/register-stafflogin',staffregistrationController.Stafflogin)//staff logirouter
+router.post('/stafflogin',staffregistrationController.Stafflogin)//staff logirouter
 
 
 

@@ -6,6 +6,8 @@ const path = require('path');
 
 
 const taskregistrationController = require('../../controller/task/registration');
+const tokens = require('../../controller/staff/registration')
+
 
 
 const fs = require('fs');
@@ -65,7 +67,7 @@ router.post('/uploads', upload.array('file',10), (req, res) => {
 
 
 
-router.post('/register-task',taskregistrationController.verifystaffttoken,taskregistrationController.createTask);
+router.post('/task',tokens.verifystaffttoken,taskregistrationController.createTask);
 
 
 
@@ -76,6 +78,6 @@ router.post('/register-task',taskregistrationController.verifystaffttoken,taskre
 
 
 
-router.put('/register-updatetask',taskregistrationController.verifystaffttoken,taskregistrationController.updateTask)
+router.put('/updatetask',tokens.verifystaffttoken,taskregistrationController.updateTask)
 
 module.exports = router;

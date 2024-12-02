@@ -20,6 +20,6 @@ const emailregistercontroll = require('../../controller/email/registration')
 
 
 
-router.post("/register-send-mail",emailregistercontroll.sendmail)
+router.post("/send-email",emailregistercontroll.sendmail)
 
 module.exports =router;

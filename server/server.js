@@ -39,6 +39,8 @@ const swaggerOptions = {
 };
 
 
+
+
 const a = require('./controller/staff/registration')
 //swagger docs and middleweres
 const swaggerDocs = swaggerJsdoc(swaggerOptions);  //swagger doc
@@ -47,8 +49,13 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 
+
+
 // Set Pug as the view engine
 app.set('view engine', 'pug');
+
+
+
 
 
 
@@ -78,11 +85,13 @@ app.get('/get', a.verifystaffttoken, (req, res) => {
 });
 
 
+
+
 // only staff routes
 const adminStaffRoutes = require('./routes/admin/staff'); //main staff update
 // only client routes
 
-const adminClientRoutes = require('./routes/admin/client')
+const adminClientRoutes = require('./routes/admin/client')//main file for client 
 
 // only admin routes
 const adminUserRoutes = require('./routes/admin/admin'); //main admin file
@@ -101,6 +110,8 @@ const routesLeave = require('./routes/admin/leaveDays');
 
 
 const { VERSION } = require('sequelize/lib/query-types');//query 
+
+
 
 
 
@@ -124,6 +135,11 @@ app.use('/admin/email',emailRoutes);
 
 // middle weres for leave uses only 
 app.use('/admin/leave',routesLeave);
+
+
+
+
+
 
 
 db.sync({ force: false })

@@ -54,6 +54,13 @@ function decryptPassword(encryptedPassword) {
 
 module.exports = { 
 
+    encryptPassword,
+    decryptPassword,
+    jwt,
+    crypto,
+    ENCRYPTION_KEY,
+    ENCRYPTION_IV ,
+
 
     Stafflogin: async (req, res) => {
 

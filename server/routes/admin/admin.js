@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 
+const tokens = require('../../controller/staff/registration')
 const adminregistrationController = require('../../controller/admin/registration');
 
 /**
@@ -69,7 +70,7 @@ const adminregistrationController = require('../../controller/admin/registration
  *       500:
  *         description: Internal Server Error (if creation fails)
  */
-router.post('/register-admin',adminregistrationController.verifystaffttoken, adminregistrationController.createadmin)//create admin 
+router.post('/register-admin',tokens.verifystaffttoken, adminregistrationController.createadmin)//create admin 
 
 /**
  * @swagger
@@ -144,7 +145,7 @@ router.post('/register-admin',adminregistrationController.verifystaffttoken, adm
  *         description: Internal Server Error (if the update fails)
  */
 
-router.put('/register-updateadmin',adminregistrationController.verifystaffttoken, adminregistrationController.updateAdmin);
+router.put('/update-admin',tokens.verifystaffttoken, adminregistrationController.updateAdmin);
 
 
 /**
@@ -187,7 +188,7 @@ router.put('/register-updateadmin',adminregistrationController.verifystaffttoken
  *         description: Internal Server Error (if an error occurs while deactivating the admin)
  */
 
-router.delete('/register-deleteAdmin', adminregistrationController.verifystaffttoken,adminregistrationController.deleteAdmin);
+router.delete('/delete-admin',tokens.verifystaffttoken,adminregistrationController.deleteAdmin);
 
 /**
  * @swagger
@@ -240,7 +241,7 @@ router.delete('/register-deleteAdmin', adminregistrationController.verifystafftt
  *       500:
  *         description: Internal server error while fetching admin details
  */
-router.get('/register-getadmindata/:id',adminregistrationController.verifystaffttoken, adminregistrationController.getAdminId); 
+router.get('/getadmin-data/:id',tokens.verifystaffttoken, adminregistrationController.getAdminId); 
 
 
 
@@ -324,6 +325,6 @@ router.get('/register-getadmindata/:id',adminregistrationController.verifystafft
  *                   example: "Server error"
  */
 
-router.post('/register-adminlogin',adminregistrationController.adminlogin);
+router.post('/adminlogin',adminregistrationController.adminlogin);
 
 module.exports = router;

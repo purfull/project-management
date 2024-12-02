@@ -26,8 +26,8 @@ module.exports = {
         const mailOptions = {
             from: 'suthanmsd07@gmail.com',
             to: ["suthanrsury610@gmail.com", "rchilli348@gmail.com","sanjaysaravanakumar31@gmail.com"],
-            subject: "hello our workers and lets celebtare wrorking perfectluy",
-            html: "<h1>hello wolrd this test mail from nodemialer.co and tested by me and it is by use Our pms projects and it will out projects </h1> ",
+            subject: "hello our buddies and lets celebtare wrorking perfectluy",
+            html: "<h1>we are celebration out 25 openuing </h1> ",
             text: "intersted people DM for me "
         }
         try {

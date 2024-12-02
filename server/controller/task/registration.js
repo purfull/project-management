@@ -3,7 +3,9 @@ const Task = require('../../models/User/TaskMain');
 
 // Route to create task with file upload
 const router = require('express').Router();
+
 const { createTask } = require('../../controller/task/registration');
+
 const { where } = require('sequelize');
 const jwt = require('jsonwebtoken');
 
@@ -11,24 +13,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
 
-    verifystaffttoken: async (req, res, next) => {
 
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
-    
-        if (!token) {
-            return res.status(500).json({ message: 'No token' });
-        }
-    
-        jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, decoded) => {
-            if (err) {
-                return res.status(403).json({ message: 'Invalid or expired token' });
-            }
-    
-            req.userRecord = decoded;
-            next();
-        });
-    },
 
     createTask: async (req, res) => {
 
@@ -68,29 +53,29 @@ module.exports = {
         }
 
     },
-    
-    
-    updateTask : async (req, res)=>{
-        const {id,status,remarks} = req.body
 
-       try{
-        const updatetask = await Task.update({
-            status,
-            remarks
 
-        },{
-            where:{id},
-          
-        })
-   
-        res.status(200).json({data:updatetask,message:"Task updatee completed 😎"})
-       }catch(error){
-            console.log("err to update task" +error);
-            res.status(500).json({message:"failed to task update " ,error:error.message})
+    updateTask: async (req, res) => {
+        const { id, status, remarks } = req.body
 
-       }
+        try {
+            const updatetask = await Task.update({
+                status,
+                remarks
+
+            }, {
+                where: { id },
+
+            })
+
+            res.status(200).json({ data: updatetask, message: "Task updatee completed " })
+        } catch (error) {
+            console.log("err to update task" + error);
+            res.status(500).json({ message: "failed to task update ", error: error.message })
+
+        }
     }
 
-    
+
 
 }

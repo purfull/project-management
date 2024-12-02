@@ -1,64 +1,22 @@
 const Client = require("../../models/User/ClientUser");  //client
 
-
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt')
-
-//libraraies for encrypt and decrypt
-const crypto = require('crypto');
-const { Buffer } = require('buffer');
-const { decode } = require("punycode");
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '1fdf1ebbdac54ece8b28360ea84e9d15a82b5fff14197d36ce42ecdaa29d361b';
-const ENCRYPTION_IV = process.env.ENCRYPTION_IV || '7d51aeeb7de5bfd0d37507aa1361eff7';
-
-function encryptPassword(password) {
-    if (!ENCRYPTION_KEY || Buffer.from(ENCRYPTION_KEY, 'hex').length !== 32) {
-        throw new Error('Invalid ENCRYPTION_KEY: Must be 32 bytes (64 hex characters)');
-    }
-    if (!ENCRYPTION_IV || Buffer.from(ENCRYPTION_IV, 'hex').length !== 16) {
-        throw new Error('Invalid ENCRYPTION_IV: Must be 16 bytes (32 hex characters)');
-    }
-
-    const keyBuffer = Buffer.from(ENCRYPTION_KEY, 'hex'); // Interpret as hex
-    const ivBuffer = Buffer.from(ENCRYPTION_IV, 'hex');   // Interpret as hex
-
-    const cipher = crypto.createCipheriv('aes-256-cbc', keyBuffer, ivBuffer);
-    let encrypted = cipher.update(password, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
-}
-
-//function for  decyrpt password
-function decryptPassword(encryptedPassword) {
-    if (!ENCRYPTION_KEY || Buffer.from(ENCRYPTION_KEY, 'hex').length !== 32) {
-        throw new Error('Invalid ENCRYPTION_KEY: Must be 32 bytes (64 hex characters)');
-    }
-    if (!ENCRYPTION_IV || Buffer.from(ENCRYPTION_IV, 'hex').length !== 16) {
-        throw new Error('Invalid ENCRYPTION_IV: Must be 16 bytes (32 hex characters)');
-    }
-
-    const keyBuffer = Buffer.from(ENCRYPTION_KEY, 'hex');
-    const ivBuffer = Buffer.from(ENCRYPTION_IV, 'hex');
-
-    const decipher = crypto.createDecipheriv('aes-256-cbc', keyBuffer, ivBuffer);
-    let decrypted = decipher.update(encryptedPassword, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-}
-
-
-
-
+const {
+    encryptPassword,
+    decryptPassword,
+    jwt,
+    crypto,
+    ENCRYPTION_KEY,
+    ENCRYPTION_IV,
+} = require('../staff/registration');
 
 
 module.exports = {
-    encryptPassword,
-    decryptPassword,
 
+    
 
     clientlogin: async (req, res) => {
 
-        const { user_name,password} = req.body
+        const { user_name, password } = req.body
 
         try {
             const clientRecord = await Client.findOne({ where: { user_name } });
@@ -67,11 +25,11 @@ module.exports = {
                 return res.status(404).json({ message: "Client not found" });
 
             }
-            
+
             const pass = decryptPassword(clientRecord.password);
 
             if (pass != password) {
-                return res.status(401).json({ message: "Access denied: Incorrectttt password" });    
+                return res.status(401).json({ message: "Access denied: Incorrectttt password" });
             }
 
             const token = jwt.sign(
@@ -98,34 +56,14 @@ module.exports = {
 
     },
 
-    verifystaffttoken: async (req, res, next) => {
-
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
-    
-        if (!token) {
-            return res.status(500).json({ message: 'No token' });
-        }
-    
-        jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err, decoded) => {
-            if (err) {
-                return res.status(403).json({ message: 'Invalid or expired token' });
-            }
-    
-            req.userRecord = decoded;
-            next();
-        });
-    },
-
-
     //getting cleing starting 
     getClientId: async (req, res) => {
         const { id } = req.params;
 
         try {
-            if(!req.userRecord){
-                return res.status(403).json({message:"no token provided ra permission denind"})
-        }
+            if (!req.userRecord) {
+                return res.status(403).json({ message: "no token provided ra permission denind" })
+            }
             const clientRecord = await Client.findOne({ where: { id } });
 
             if (clientRecord) {
@@ -184,9 +122,9 @@ module.exports = {
         } = req.body;
 
         try {
-            if(!req.userRecord){
-                return res.status(403).json({message:"no token provided ra permission denind"})
-        }
+            if (!req.userRecord) {
+                return res.status(403).json({ message: "no token provided ra permission denind" })
+            }
             const encryptedPassword = encryptPassword(password);
             const newclient = await Client.create({
                 company_name,
@@ -236,9 +174,9 @@ module.exports = {
         } = req.body
 
         try {
-            if(!req.userRecord){
-                return res.status(403).json({message:"no token provided ra permission denind"})
-        }
+            if (!req.userRecord) {
+                return res.status(403).json({ message: "no token provided ra permission denind" })
+            }
             const encryptedPassword = encryptPassword(password);
             const clientResult = await Client.update({
                 id,
@@ -274,9 +212,9 @@ module.exports = {
         const { id } = req.body
 
         try {
-            if(!req.userRecord){
-                return res.status(403).json({message:"no token provided ra permission denind"})
-        }
+            if (!req.userRecord) {
+                return res.status(403).json({ message: "no token provided ra permission denind" })
+            }
             const deleteresult = await Client.update(
                 { isActive: false },
                 { where: { id } }
@@ -294,7 +232,10 @@ module.exports = {
     },
     //ending client delete staff
 
+
 }
+
+
 
 
 

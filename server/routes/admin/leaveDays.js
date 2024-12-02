@@ -4,10 +4,12 @@ const router = express.Router()
 
 
 const leaveregistrationController = require('../../controller/leave/registration');
+const tokens = require('../../controller/staff/registration')
 
 
 
-router.post('/register-leave',leaveregistrationController.verifystaffttoken,leaveregistrationController.leavedays);
+
+router.post('/leave',tokens.verifystaffttoken,leaveregistrationController.leavedays);
 
 
 
