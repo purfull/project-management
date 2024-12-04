@@ -1,3 +1,4 @@
+// const ClientUser = require("../../models/User/ClientUser");
 const Client = require("../../models/User/ClientUser");  //client
 
 const {
@@ -12,7 +13,7 @@ const {
 
 module.exports = {
 
-    
+
 
     clientlogin: async (req, res) => {
 
@@ -62,7 +63,7 @@ module.exports = {
 
         try {
             if (!req.userRecord) {
-                return res.status(403).json({ message: "no token provided ra permission denind" })
+                return res.status(403).json({ message: "no token provided  permission denind" })
             }
             const clientRecord = await Client.findOne({ where: { id } });
 
@@ -98,6 +99,25 @@ module.exports = {
         }
     },//ending get client
 
+    //getall data apis  
+
+    getallclientdata: async (req, res) => {
+
+        try {
+          const getalldata = await Client.findAll(
+                {attributes:['id','cp_email','isActive']}
+          )
+      
+          res.status(200).json({ data: getalldata, message: "All client data fetched successfully" });
+        } catch (error) {
+          console.log("Failed to fetch client data:", error);
+          res.status(500).json({ message: "Error fetching client data", error: error.message });
+        }
+        
+      },
+      
+    //get all apis 
+
 
     //starting create client 
 
@@ -122,9 +142,7 @@ module.exports = {
         } = req.body;
 
         try {
-            if (!req.userRecord) {
-                return res.status(403).json({ message: "no token provided ra permission denind" })
-            }
+
             const encryptedPassword = encryptPassword(password);
             const newclient = await Client.create({
                 company_name,

@@ -79,7 +79,7 @@ const clientregistercontroll = require('../../controller/client/registration');
  *       500:
  *         description: Internal Server Error
  */
-router.post('/register-client',tokens.verifystaffttoken, clientregistercontroll.createclient); //completedn
+router.post('/register-client', clientregistercontroll.createclient); //completedn
 
 
 
@@ -284,6 +284,9 @@ router.delete('/delete-client',tokens.verifystaffttoken,clientregistercontroll.d
  *         description: Internal Server Error (if there is an error retrieving client details)
  */
 router.get('/getclient-data/:id',tokens.verifystaffttoken, clientregistercontroll.getClientId); //get staff using id
+
+
+router.get('/get-all-clientdata',clientregistercontroll.getallclientdata)
 
 /**
  * @swagger

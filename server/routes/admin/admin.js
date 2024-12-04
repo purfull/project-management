@@ -70,7 +70,7 @@ const adminregistrationController = require('../../controller/admin/registration
  *       500:
  *         description: Internal Server Error (if creation fails)
  */
-router.post('/register-admin',tokens.verifystaffttoken, adminregistrationController.createadmin)//create admin 
+router.post('/register-admin' , adminregistrationController.createadmin)//create admin 
 
 /**
  * @swagger
@@ -244,7 +244,7 @@ router.delete('/delete-admin',tokens.verifystaffttoken,adminregistrationControll
 router.get('/getadmin-data/:id',tokens.verifystaffttoken, adminregistrationController.getAdminId); 
 
 
-
+router.get('/get-all-admindata', tokens.verifystaffttoken,adminregistrationController.getalladmindata)
 /**
  * @swagger
  * tags:
@@ -325,6 +325,6 @@ router.get('/getadmin-data/:id',tokens.verifystaffttoken, adminregistrationContr
  *                   example: "Server error"
  */
 
-router.post('/adminlogin',adminregistrationController.adminlogin);
+router.post('/adminlogin', adminregistrationController.adminlogin);
 
 module.exports = router;

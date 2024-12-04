@@ -76,7 +76,7 @@ const staffregistrationController = require('../../controller/staff/registration
 *       500:
 *         description: Internal Server Error
 */
-router.post('/register-user',staffregistrationController.verifystaffttoken, staffregistrationController.createStaff);  // Create staff details
+router.post('/register-user', staffregistrationController.createStaff);  // Create staff details
 
 
 
@@ -303,7 +303,7 @@ router.get('/getstaff-data/:id',staffregistrationController.verifystaffttoken, s
 
 
 
-
+router.get('/get-all-staffdata',staffregistrationController.verifystaffttoken,staffregistrationController.getallstaffdata)
 
 /**
  * @swagger

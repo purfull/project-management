@@ -103,13 +103,13 @@ const taskMainRoutes = require('./routes/admin/tasks'); //main task
 const perfomaceMainRoutes = require('./routes/admin/performance');//performance
 
 //email routes
-const emailRoutes = require('./routes/admin/email');//email
+const emailRoutes = require('./routes/admin/email'); //email for 
 
 //leave route
-const routesLeave = require('./routes/admin/leaveDays');
+const routesLeave = require('./routes/admin/leaveDays');  //leave for 
 
 
-const { VERSION } = require('sequelize/lib/query-types');//query 
+const { VERSION } = require('sequelize/lib/query-types'); //query for 
 
 
 

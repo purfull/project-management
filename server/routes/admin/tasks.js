@@ -78,6 +78,6 @@ router.post('/task',tokens.verifystaffttoken,taskregistrationController.createTa
 
 
 
-router.put('/updatetask',tokens.verifystaffttoken,taskregistrationController.updateTask)
+router.put('/update-task',tokens.verifystaffttoken,taskregistrationController.updateTask)
 
 module.exports = router;

@@ -166,6 +166,23 @@ module.exports = {
             res.status(500).json({ message: "Failed to retrieve staff details" });
         }
     },
+
+    getallstaffdata: async (req, res)=>{
+
+    try{
+        const allstaffdata = await Staff.findAll(
+            {
+                attributes: ['id', 'user_name', 'email','isActive'], 
+
+            }
+        )
+        res.status(200).json({data:allstaffdata,message:"all staff getting successfully "})
+    }catch(error){
+        console.log("error to get staff data"+ error);
+        res.status(500).json({message:"error to get staff datas", error:error.message})
+        
+    }
+    },
     
     //craete staff starting 
     createStaff: async (req, res) => {
@@ -189,9 +206,7 @@ module.exports = {
         
 
         try {
-            if (!req.userRecord) {
-                return res.status(403).json({ message: "No token provided, permission denied" });
-            }
+        
             // Encrypt the password
             const encryptedPassword = encryptPassword(password);
     

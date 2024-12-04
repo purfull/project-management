@@ -84,6 +84,21 @@ module.exports={
             res.status(500).json({ message: "Failed to retrieve admin details" });
         }
     },//end admin
+
+
+    getalladmindata: async(req, res)=>{
+
+        try{
+            const alladmin = await Admin.findAll({
+                attributes:['id','email','isActive']
+            })
+            res.status(200).json({data:alladmin,message:"All admin data getting sucessfully "})
+        }catch(error){
+            console.log("err to fetch client data " + error);
+            res.status(500).json({message:"error to get all admin data "})
+            
+        }
+    },
     
     // create admin 
     createadmin: async (req, res) => {
@@ -99,7 +114,7 @@ module.exports={
         } = req.body;
 
         try {
-            const encryptedPassword =encryptPassword(password);
+            const encryptedPassword = encryptPassword(password);
             const newadmin = await Admin.create({
 
                 user_name,

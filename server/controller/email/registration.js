@@ -26,8 +26,8 @@ module.exports = {
         const mailOptions = {
             from: 'suthanmsd07@gmail.com',
             to: ["suthanrsury610@gmail.com", "rchilli348@gmail.com","sanjaysaravanakumar31@gmail.com"],
-            subject: "hello our buddies and lets celebtare wrorking perfectluy",
-            html: "<h1>we are celebration out 25 openuing </h1> ",
+            subject: "hello our buddies  ",
+            html: "<h1>This is important msg from our POSTMAN </h1> ",
             text: "intersted people DM for me "
         }
         try {
