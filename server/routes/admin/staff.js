@@ -79,12 +79,15 @@ const staffregistrationController = require('../../controller/staff/registration
 router.post('/register-user', staffregistrationController.createStaff);  // Create staff details
 
 
-
 /**
  * @swagger
- * /admin/staff/register-updateuser:
+ * /admin/staff/update-user:
  *   put:
- *     summary: Update staff details in the database
+ *     security:
+ *       - bearerAuth: []
+ * 
+ *     summary: Update an existing staff member's details
+ *     description: This endpoint allows you to update the details of an existing staff member, such as username, email, phone number, and other personal and professional information.
  *     requestBody:
  *       required: true
  *       content:
@@ -94,52 +97,67 @@ router.post('/register-user', staffregistrationController.createStaff);  // Crea
  *             properties:
  *               id:
  *                 type: integer
+ *                 description: The ID of the staff member to be updated
  *                 example: 1
  *               user_name:
  *                 type: string
- *                 example: "john_doe"
+ *                 description: Updated username for the staff member
+ *                 example: "john_doe_updated"
  *               password:
  *                 type: string
+ *                 description: New encrypted password for the staff member
  *                 example: "new_password123"
  *               email:
  *                 type: string
- *                 example: "john.doe@example.com"
+ *                 description: Updated email address
+ *                 example: "john.doe.updated@example.com"
  *               phone_number:
  *                 type: string
+ *                 description: Updated phone number
  *                 example: "+1234567890"
  *               user_role:
  *                 type: string
+ *                 description: Updated role of the staff member
  *                 example: "admin"
  *               staff_name:
  *                 type: string
+ *                 description: Updated full name of the staff member
  *                 example: "John Doe"
  *               staff_phone:
  *                 type: string
+ *                 description: Updated phone number of the staff member
  *                 example: "+0987654321"
  *               staff_email:
  *                 type: string
- *                 example: "staff.john.doe@example.com"
+ *                 description: Updated email of the staff member
+ *                 example: "staff.john.doe.updated@example.com"
  *               profile_pic:
  *                 type: string
+ *                 description: URL to the updated profile picture
  *                 example: "profile_pic_url"
  *               address:
  *                 type: string
+ *                 description: Updated address
  *                 example: "123 Main St"
  *               city:
  *                 type: string
+ *                 description: Updated city
  *                 example: "New York"
  *               state:
  *                 type: string
+ *                 description: Updated state
  *                 example: "NY"
  *               postal_code:
  *                 type: string
+ *                 description: Updated postal code
  *                 example: "10001"
  *               country:
  *                 type: string
+ *                 description: Updated country
  *                 example: "USA"
  *     responses:
  *       200:
- *         description: Success
+ *         description: Staff details updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -148,19 +166,40 @@ router.post('/register-user', staffregistrationController.createStaff);  // Crea
  *                 message:
  *                   type: string
  *                   example: "Staff updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user_name:
+ *                       type: string
+ *                       example: "john_doe_updated"
+ *                     email:
+ *                       type: string
+ *                       example: "john.doe.updated@example.com"
+ *                     phone_number:
+ *                       type: string
+ *                       example: "+1234567890"
+ *                     user_role:
+ *                       type: string
+ *                       example: "admin"
  *       400:
- *         description: Bad Request (if required fields are missing)
+ *         description: Bad Request (if required fields are missing or incorrect)
+ *       404:
+ *         description: Staff member not found (if no staff member exists with the given ID)
  *       500:
- *         description: Internal Server Error
+ *         description: Internal Server Error (if the update fails)
  */
-router.put('/update-user',staffregistrationController.verifystaffttoken, staffregistrationController.updateStaff);  // update staff
 
+router.put('/update-user',staffregistrationController.verifystaffttoken, staffregistrationController.updateStaff);  // update staff
 
 /**
  * @swagger
- * /admin/staff/register-deleteUser:
+ * /admin/staff/delete-user:
  *   delete:
- *     summary: Mark staff record as inactive (soft delete) in the database
+ *     security:
+ *       - bearerAuth: []
+ *   
+ *     summary: Soft delete a staff record by marking it as inactive
+ *     description: This endpoint allows you to mark a staff record as inactive, effectively soft deleting it from the database. The record remains in the database but is no longer active.
  *     requestBody:
  *       required: true
  *       content:
@@ -170,10 +209,11 @@ router.put('/update-user',staffregistrationController.verifystaffttoken, staffre
  *             properties:
  *               id:
  *                 type: integer
+ *                 description: The ID of the staff member to be marked as inactive
  *                 example: 123
  *     responses:
  *       200:
- *         description: Successfully marked record as inactive
+ *         description: Successfully marked the record as inactive
  *         content:
  *           application/json:
  *             schema:
@@ -206,19 +246,21 @@ router.put('/update-user',staffregistrationController.verifystaffttoken, staffre
  *                   type: string
  *                   example: "Error occurred: [error message]"
  */
+
 router.delete('/delete-user',staffregistrationController.verifystaffttoken ,staffregistrationController.deleteStaff);  // Delete staff (soft delete)
-
-
 
 /**
  * @swagger
- * /admin/staff/register-getStaffdata/{id}:
+ * /admin/staff/getstaff-data/{id}:
  *   get:
- *     summary: Get staff details by ID from the database
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Retrieve staff details by ID
+ *     description: This endpoint fetches detailed information for a specific staff member based on their unique ID.
  *     parameters:
  *       - name: id
  *         in: path
- *         description: ID of the staff to retrieve
+ *         description: The unique identifier of the staff member to retrieve
  *         required: true
  *         schema:
  *           type: integer
@@ -279,7 +321,7 @@ router.delete('/delete-user',staffregistrationController.verifystaffttoken ,staf
  *                       type: string
  *                       example: "Countryland"
  *       404:
- *         description: Staff not found
+ *         description: Staff not found (ID does not exist)
  *         content:
  *           application/json:
  *             schema:
@@ -289,7 +331,7 @@ router.delete('/delete-user',staffregistrationController.verifystaffttoken ,staf
  *                   type: string
  *                   example: "Staff not found"
  *       500:
- *         description: Internal server error
+ *         description: Internal server error (e.g., database connection issues)
  *         content:
  *           application/json:
  *             schema:
@@ -299,8 +341,66 @@ router.delete('/delete-user',staffregistrationController.verifystaffttoken ,staf
  *                   type: string
  *                   example: "Failed to retrieve staff details"
  */
+
 router.get('/getstaff-data/:id',staffregistrationController.verifystaffttoken, staffregistrationController.getStaffById); // Get staff using ID
 
+
+
+
+/**
+ * @swagger
+ * tags:
+ *     description: Endpoints for managing staff data
+ *
+ * /admin/staff/get-all-staffdata:
+ *   get:
+ *     security:
+ *       - bearerAuth: []  # Requires Bearer Token
+ *     tags:
+ *     summary: Retrieve all staff data
+ *     description: Fetches details of all staff, including ID, user name, email, and active status.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all staff data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       user_name:
+ *                         type: string
+ *                         example: "john_doe"
+ *                       email:
+ *                         type: string
+ *                         example: "john.doe@example.com"
+ *                       isActive:
+ *                         type: boolean
+ *                         example: true
+ *                 message:
+ *                   type: string
+ *                   example: "All staff data retrieved successfully"
+ *       500:
+ *         description: Internal server error while fetching staff data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error occurred while retrieving staff data"
+ *                 error:
+ *                   type: string
+ *                   example: "Detailed error message"
+ */
 
 
 router.get('/get-all-staffdata',staffregistrationController.verifystaffttoken,staffregistrationController.getallstaffdata)
@@ -309,7 +409,7 @@ router.get('/get-all-staffdata',staffregistrationController.verifystaffttoken,st
  * @swagger
 
  *
- * /admin/staff/register-stafflogin:
+ * /admin/staff/staff-login:
  *   post:
  *     tags:
  *     
@@ -384,7 +484,7 @@ router.get('/get-all-staffdata',staffregistrationController.verifystaffttoken,st
  */
 
 
-router.post('/stafflogin',staffregistrationController.Stafflogin)//staff logirouter
+router.post('/staff-login',staffregistrationController.Stafflogin)//staff logirouter
 
 
 

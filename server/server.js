@@ -15,6 +15,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded());
 //body parser
 
 // CORS options

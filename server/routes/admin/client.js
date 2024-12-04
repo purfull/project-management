@@ -84,15 +84,16 @@ router.post('/register-client', clientregistercontroll.createclient); //complete
 
 
 
-
 /**
  * @swagger
- * /admin/client/register-updateclient:
+ * /admin/client/update-client:
  *   put:
- *     summary: Update an existing client account
- *     description: This endpoint allows you to update the details of an existing client using their ID.
+ *     security:
+ *       - bearerAuth: []  # Requires Bearer Token
  *     tags:
  *       - Client Management
+ *     summary: Update an existing client account
+ *     description: This endpoint allows you to update the details of an existing client account, including company information, contact details, and address.
  *     requestBody:
  *       required: true
  *       content:
@@ -102,52 +103,67 @@ router.post('/register-client', clientregistercontroll.createclient); //complete
  *             properties:
  *               id:
  *                 type: integer
+ *                 description: The ID of the client to be updated
  *                 example: 123
  *               company_name:
  *                 type: string
+ *                 description: Updated company name
  *                 example: "Tech Solutions Inc."
  *               cp_name:
  *                 type: string
+ *                 description: Updated contact person's name
  *                 example: "Jane Doe"
  *               user_name:
  *                 type: string
+ *                 description: Updated client username
  *                 example: "janedoe_tech"
  *               password:
  *                 type: string
+ *                 description: New encrypted password
  *                 example: "newSecurePassword123"
  *               cp_phone:
  *                 type: string
+ *                 description: Updated contact person's phone number
  *                 example: "+1234567890"
  *               cp_email:
  *                 type: string
+ *                 description: Updated contact person's email
  *                 example: "janedoe@techsolutions.com"
  *               company_phone:
  *                 type: string
+ *                 description: Updated company phone number
  *                 example: "+0987654321"
  *               company_email:
  *                 type: string
+ *                 description: Updated company email
  *                 example: "contact@techsolutions.com"
  *               company_logo:
  *                 type: string
+ *                 description: URL to the updated company logo
  *                 example: "https://example.com/logo.png"
  *               address:
  *                 type: string
+ *                 description: Updated company address
  *                 example: "456 Tech Park"
  *               city:
  *                 type: string
+ *                 description: Updated city
  *                 example: "San Francisco"
  *               state:
  *                 type: string
+ *                 description: Updated state
  *                 example: "CA"
  *               postal_code:
  *                 type: string
+ *                 description: Updated postal code
  *                 example: "94105"
  *               country:
  *                 type: string
+ *                 description: Updated country
  *                 example: "USA"
  *     responses:
  *       201:
- *         description: Client details updated successfully
+ *         description: Client account updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -155,27 +171,68 @@ router.post('/register-client', clientregistercontroll.createclient); //complete
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "client updated successfully"
+ *                   example: "Client updated successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     company_name:
+ *                       type: string
+ *                       example: "Tech Solutions Inc."
+ *                     cp_name:
+ *                       type: string
+ *                       example: "Jane Doe"
+ *                     user_name:
+ *                       type: string
+ *                       example: "janedoe_tech"
+ *                     cp_phone:
+ *                       type: string
+ *                       example: "+1234567890"
+ *                     cp_email:
+ *                       type: string
+ *                       example: "janedoe@techsolutions.com"
+ *                     company_phone:
+ *                       type: string
+ *                       example: "+0987654321"
+ *                     company_email:
+ *                       type: string
+ *                       example: "contact@techsolutions.com"
+ *                     company_logo:
+ *                       type: string
+ *                       example: "https://example.com/logo.png"
+ *                     address:
+ *                       type: string
+ *                       example: "456 Tech Park"
+ *                     city:
+ *                       type: string
+ *                       example: "San Francisco"
+ *                     state:
+ *                       type: string
+ *                       example: "CA"
+ *                     postal_code:
+ *                       type: string
+ *                       example: "94105"
+ *                     country:
+ *                       type: string
+ *                       example: "USA"
  *       400:
  *         description: Bad Request (if required fields are missing or incorrect)
  *       404:
  *         description: Client not found (if the ID does not exist in the database)
  *       500:
- *         description: Internal Server Error (for unexpected issues during update)
+ *         description: Internal Server Error (if the update fails)
  */
 router.put('/update-client',tokens.verifystaffttoken,clientregistercontroll.updateClient) // udpate client
 
-
-
-
 /**
  * @swagger
- * /admin/client/register-deleteclient:
+ * /admin/client/delete-client:
  *   delete:
- *     summary: Mark a client as inactive (soft delete)
- *     description: This endpoint allows you to mark a client as inactive by updating the `isActive` field to `false` instead of permanently deleting the record.
+ *     security:
+ *       - bearerAuth: []  # Requires Bearer Token
  *     tags:
  *       - Client Management
+ *     summary: Mark a client as inactive (soft delete)
+ *     description: This endpoint allows you to mark a client as inactive by updating the `isActive` field to `false` instead of permanently deleting the record.
  *     requestBody:
  *       required: true
  *       content:
@@ -185,6 +242,7 @@ router.put('/update-client',tokens.verifystaffttoken,clientregistercontroll.upda
  *             properties:
  *               id:
  *                 type: integer
+ *                 description: The ID of the client to be marked as inactive
  *                 example: 123
  *     responses:
  *       200:
@@ -199,24 +257,31 @@ router.put('/update-client',tokens.verifystaffttoken,clientregistercontroll.upda
  *                   example: "Record marked as inactive"
  *                 deleteresult:
  *                   type: object
- *                   example: { "status": "success", "updatedRows": 1 }
+ *                   properties:
+ *                     status:
+ *                       type: string
+ *                       example: "success"
+ *                     updatedRows:
+ *                       type: integer
+ *                       example: 1
  *       404:
  *         description: Client record not found (if the client with the given ID does not exist)
  *       500:
  *         description: Internal Server Error (if there is an error during the deletion process)
  */
+
+
 router.delete('/delete-client',tokens.verifystaffttoken,clientregistercontroll.deleteClient) // delete client
-
-
-
 /**
  * @swagger
- * /admin/client/register-getClientdata/{id}:
+ * /admin/client/getclient-data/{id}:
  *   get:
- *     summary: Retrieve client details by ID
- *     description: This endpoint retrieves the details of a client based on the provided client ID.
+ *     security:
+ *       - bearerAuth: []  # Requires Bearer Token
  *     tags:
  *       - Client Management
+ *     summary: Retrieve client details by ID
+ *     description: This endpoint retrieves the details of a client based on the provided client ID.
  *     parameters:
  *       - name: id
  *         in: path
@@ -283,10 +348,66 @@ router.delete('/delete-client',tokens.verifystaffttoken,clientregistercontroll.d
  *       500:
  *         description: Internal Server Error (if there is an error retrieving client details)
  */
+
+
 router.get('/getclient-data/:id',tokens.verifystaffttoken, clientregistercontroll.getClientId); //get staff using id
 
 
-router.get('/get-all-clientdata',clientregistercontroll.getallclientdata)
+/**
+ * @swagger
+ * tags:
+ *   - name: Client Management
+ *     description: Endpoints for managing client data
+ *
+ * /admin/client/get-all-clientdata:
+ *   get:
+ *     tags:
+ *       - Client Management
+ *     summary: Retrieve all client data
+ *     description: Fetches all client data, including specified attributes like ID, email, and active status.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all client data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       cp_email:
+ *                         type: string
+ *                         example: "client@example.com"
+ *                       isActive:
+ *                         type: boolean
+ *                         example: true
+ *                 message:
+ *                   type: string
+ *                   example: "All client data fetched successfully"
+ *       500:
+ *         description: Internal server error while fetching client data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error fetching client data"
+ *                 error:
+ *                   type: string
+ *                   example: "Detailed error message"
+ */
+
+
+
+router.get('/get-all-clientdata',tokens.verifystaffttoken,clientregistercontroll.getallclientdata)
 
 /**
  * @swagger
@@ -294,7 +415,7 @@ router.get('/get-all-clientdata',clientregistercontroll.getallclientdata)
  *   - name: Client Management
  *     description: Endpoints for managing client authentication
  *
- * /admin/client/register-Clientlogin:
+ * /admin/client/Client-login:
  *   post:
  *     tags:
  *       - Client Management
@@ -368,6 +489,6 @@ router.get('/get-all-clientdata',clientregistercontroll.getallclientdata)
  *                   example: "Server error"
  */
 
-router.post('/clientlogin',clientregistercontroll.clientlogin)//staff login
+router.post('/client-login',clientregistercontroll.clientlogin)//staff login
 
 module.exports = router;
