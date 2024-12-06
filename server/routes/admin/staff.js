@@ -29,7 +29,7 @@ const staffregistrationController = require('../../controller/staff/registration
 *                 example: "john.doe@example.com"
 *               phone_number:
 *                 type: string
-*                 example: "+1234567890"
+*                 example: "9942959495"
 *               user_role:
 *                 type: string
 *                 example: "admin"
@@ -349,8 +349,7 @@ router.get('/getstaff-data/:id',staffregistrationController.verifystaffttoken, s
 
 /**
  * @swagger
- * tags:
- *     description: Endpoints for managing staff data
+
  *
  * /admin/staff/get-all-staffdata:
  *   get:
