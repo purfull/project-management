@@ -56,7 +56,6 @@ router.post('/uploads', upload.array('file',10), (req, res) => {
 
 });//ending file uload
 
-
 /**
  * @swagger
  * tags:

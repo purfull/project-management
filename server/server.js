@@ -109,6 +109,8 @@ const emailRoutes = require('./routes/admin/email'); //email for
 //leave route
 const routesLeave = require('./routes/admin/leaveDays');  //leave for 
 
+const chatRoutes = require('./routes/admin/chat')
+
 
 const { VERSION } = require('sequelize/lib/query-types'); //query for 
 
@@ -119,7 +121,7 @@ const { VERSION } = require('sequelize/lib/query-types'); //query for
 // middle weres for staff uses only 
 app.use('/admin/staff', adminStaffRoutes);
 
-// // middle weres for cleint uses only 
+// // middle weres for cleint uses only =
 app.use('/admin/client', adminClientRoutes);
 
 // middle weres for admin uses only 
@@ -132,10 +134,13 @@ app.use('/admin/task', taskMainRoutes);
 app.use('/admin/performance', perfomaceMainRoutes);
 
 // middle weres for email uses only 
-app.use('/admin/email',emailRoutes);
+app.use('/admin/email', emailRoutes);
 
 // middle weres for leave uses only 
-app.use('/admin/leave',routesLeave);
+app.use('/admin/leave', routesLeave);
+
+// middle weres for leave uses only 
+app.use('/admin/chat', chatRoutes)
 
 
 
