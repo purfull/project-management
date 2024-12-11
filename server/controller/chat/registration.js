@@ -1,4 +1,4 @@
-const chat = require('../../models/User/Chatapplication')
+const chat = require('../../models/User/Chatapplication');
 
 
 
@@ -18,6 +18,28 @@ module.exports = {
             console.log("error to send message " + error);
             res.status(500).json({ message: "error to something ", error: error.message });
         }
+    },
+
+    viewcontact: async(req, res)=>{
+        const { id } = req.params;
+        try{
+
+            const viewcontactresult = await chat.findOne({
+                where: { id },
+                attributes :['id','status','message']
+            },
+       
+        )
+        res.status(200).json({data:viewcontactresult,message:"view contact view successfully "})
+      
+        }
+        catch(err){
+
+            console.log("error to view contact" + err);
+            res.status(500).json({messgae:"error to server and view conatct session",err:err.message})
+            
+        }
+
     }
 
 }

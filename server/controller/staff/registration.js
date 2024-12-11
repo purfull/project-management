@@ -158,9 +158,7 @@ module.exports = {
                         country: staff.country,
                     }
                 });
-            } else {
-                res.status(404).json({ message: 'Staff not found' });
-            }
+            }    where: { id }
         } catch (error) {
             console.log("Error:", error);
             res.status(500).json({ message: "Failed to retrieve staff details" });

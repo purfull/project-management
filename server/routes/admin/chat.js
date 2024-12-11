@@ -57,6 +57,6 @@ router.post('/chat-uploads', upload.array('file',10), (req, res) => {
 
 
 
-   
+router.get('/chat-viewcontact/:id',chatregistrioncontroller.viewcontact)
 
 module.exports = router

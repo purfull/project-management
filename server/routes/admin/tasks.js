@@ -6,7 +6,7 @@ const path = require('path');
 
 
 const taskregistrationController = require('../../controller/task/registration');
-const tokens = require('../../controller/staff/registration')
+const tokens = require('../../controller/staff/registration');
 
 
 
