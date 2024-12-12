@@ -76,7 +76,9 @@ app.set('view engine', 'pug');
  */
 
 app.get('/get', a.verifystaffttoken, (req, res) => {
+
   const auth = req.userRecord
+  
   if (auth) {
 
     res.send("Helloo bhai World" + auth);
@@ -109,7 +111,8 @@ const emailRoutes = require('./routes/admin/email'); //email for
 //leave route
 const routesLeave = require('./routes/admin/leaveDays');  //leave for 
 
-const chatRoutes = require('./routes/admin/chat')
+//chat route
+const chatRoutes = require('./routes/admin/chat') //chat for 
 
 
 const { VERSION } = require('sequelize/lib/query-types'); //query for 
