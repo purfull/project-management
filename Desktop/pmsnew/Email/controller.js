@@ -26,13 +26,13 @@ module.exports = {
         const mailOptions = {
             from: 'suthanmsd07@gmail.com',
             to: ["suthanrsury610@gmail.com", "rchilli348@gmail.com","sanjaysaravanakumar31@gmail.com"],
-            subject: "hello our workers this updated dec 11 works   ",
-            html: "<h1>This is important msg from Our Postman I Updated App_password i put env file to this </h1> ",
+            subject: "hello our workers this updated feb 11 works   ",
+            html: "<h1>This is important msg from Our Postman I Updated App_password i put env file to this now totally updated on feb 13 </h1> ",
             text: "intersted people DM for me "
         }
         try {
             const data = await transporter.sendMail(mailOptions)
-            console.log("Mail sent successfully");
+            console.log("Mail sended successfully");
             res.status(200).json({ data, message: "Mail sended successfully" });
         } catch (err) {
             console.error("Error sending mail:", err);
